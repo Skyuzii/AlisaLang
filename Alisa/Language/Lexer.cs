@@ -16,7 +16,7 @@ namespace Alisa.Language
         private string _operatorChars = "+-*/%=|&<>^";
         private string _specialChars = "(){}[],.:@";
         private string _keywords = "if else elif var";
-        private Regex _keywordRegex = new("^([a-zA-Z_]*)$");
+        private Regex _keywordRegex = new("^([a-zA-Z_0-9]*)$");
 
         public Lexer(string file, string data)
         {
@@ -40,11 +40,6 @@ namespace Alisa.Language
 
         private TreeElement GetToken(char item)
         {
-            if (item == '=')
-            {
-                Console.WriteLine("test");
-            }
-            
             if (item == '\0') return null;
 
             if (item == '\n')
