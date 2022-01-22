@@ -18,13 +18,13 @@ namespace AlisaLang.Parser.AST.ControlFlow
 
         public override string GetSource()
         {
-            var sourceBuilder = new StringBuilder($"if {IfBlock.Item1.GetSource()} {IfBlock.Item2.GetSource()}");
+            var sourceBuilder = new StringBuilder($"if ({IfBlock.Item1.GetSource()}) {IfBlock.Item2.GetSource()}");
 
             if (ElifBlocks is not null)
             {
                 foreach (var elifBlock in ElifBlocks)
                 {
-                    sourceBuilder.AppendLine($"else if {elifBlock.Item1.GetSource()} {elifBlock.Item2.GetSource()}");
+                    sourceBuilder.AppendLine($"else if ({elifBlock.Item1.GetSource()}) {elifBlock.Item2.GetSource()}");
                 }   
             }
 
