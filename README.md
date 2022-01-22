@@ -50,17 +50,24 @@ func sum(firstNumber, secondNumber) {
 ### Пример простой программы
 ```
 func main() {
-	let pinCode = console.input("Введите пинкод: ")
-	let resultMsg = checkPinCode(pinCode)
-	console.print(resultMsg)
+	while true {
+		let pinCode = console.input("Введите пинкод: ")
+		let result = checkPinCode(pinCode)
+		if result == true {
+			console.print("Вы победили!")
+			break
+		}
+		
+		console.print("Что-то не так, попробуйте еще раз")
+	}
 }
 
 func checkPinCode(pinCode) {
 	if pinCode == "2482" {
-		return "Вы победили!"
+		return true
 	}
 	
-	return "Что-то тут не так"
+	return false
 }
 
 ```
