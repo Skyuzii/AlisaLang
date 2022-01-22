@@ -65,8 +65,12 @@ namespace AlisaLang.Compiler
                     Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
                 }
             }
+
+            var pathToOutAlisaLangLibrary = pathToOut + "AlisaLang.dll";
+            if (File.Exists(pathToOutAlisaLangLibrary))
+                File.Delete(pathToOutAlisaLangLibrary);
             
-            File.Copy(pathToAlisaLangLibrary, pathToOut + "AlisaLang.dll");
+            File.Copy(pathToAlisaLangLibrary, pathToOutAlisaLangLibrary);
             File.WriteAllText(pathToOut + fileNameWithoutExtension + ".runtimeconfig.json", GenerateRuntimeConfig());
         }
 

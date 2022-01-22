@@ -68,7 +68,22 @@ namespace AlisaLang.Parser
                 "let" => GetLetElement(lexeme),
                 "func" => GetFuncElement(lexeme),
                 "return" => GetReturnElement(lexeme),
+                "while" => GetWhileElement(lexeme),
+                "break" => GetBreakElement(lexeme),
+                "continue" => GetContinueElement(lexeme),
             };
+        }
+
+        private TreeElement GetContinueElement(Lexeme lexeme) => new ContinueElement();
+
+        private TreeElement GetBreakElement(Lexeme lexeme) => new BreakElement();
+
+        private WhileElement GetWhileElement(Lexeme lexeme)
+        {
+            var condition = ParseBeforeOpenBracket();
+            var body = ParseInBrackets("{", "}");
+
+            return new WhileElement(condition, body);
         }
 
         private ReturnElement GetReturnElement(Lexeme lexeme)
@@ -113,10 +128,20 @@ namespace AlisaLang.Parser
             {
                 case LexemeType.Operator:
                 {
-                    if (lexeme.Value == "==") return variable;
-                    _reader.Next();
-                    var right = _reader.ReadWhile(item => item.Type == LexemeType.NewLine ? false : item);
-                    return new AssignElement(variable, new OperatorElement(lexeme.Value), GetTreeElements(right));
+                    switch (lexeme.Value)
+                    {
+                        case "==":
+                            return variable;
+                        case "=":
+                        case "+=":
+                        {
+                            _reader.Next();
+                            var right = _reader.ReadWhile(item => item.Type == LexemeType.NewLine ? false : item);
+                            return new AssignElement(variable, new OperatorElement(lexeme.Value), GetTreeElements(right));
+                        }
+                        default:
+                            return variable;
+                    }
                 }
                 case LexemeType.Special:
                 {
@@ -140,7 +165,7 @@ namespace AlisaLang.Parser
 
         private IfElement GetIfElement(Lexeme lexeme)
         {
-            var condition = GetTreeElements(_reader.ReadWhile(item => item.Value == "{" ? false : item));
+            var condition = ParseBeforeOpenBracket();
             var thenExpression = ParseInBrackets("{", "}");
 
             var ifElement = new IfElement((condition, thenExpression));
@@ -154,7 +179,7 @@ namespace AlisaLang.Parser
                 {
                     case "elif":
                     {
-                        var elifCondition = GetTreeElements(_reader.ReadWhile(item => item.Value == "{" ? false : item));
+                        var elifCondition = ParseBeforeOpenBracket();
                         var elifThenExpression = ParseInBrackets("{", "}");
                         ifElement.ElifBlocks ??= new List<(List<TreeElement>, List<TreeElement>)>();
                         ifElement.ElifBlocks.Add((elifCondition, elifThenExpression));
@@ -172,6 +197,12 @@ namespace AlisaLang.Parser
             }
             
             return ifElement;
+        }
+
+        private List<TreeElement> ParseBeforeOpenBracket()
+        {
+            var lexemes = _reader.ReadWhile(item => item.Value == "{" ? false : item);
+            return GetTreeElements(lexemes);
         }
 
         private List<TreeElement> ParseInBrackets(string startBracket, string endBracket)

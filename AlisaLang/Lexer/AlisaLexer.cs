@@ -12,7 +12,7 @@ namespace AlisaLang.Lexer
         
         private string _operatorChars = "+-*/%=|&<>^";
         private string _specialChars = "(){}[],.:@";
-        private string _keywords = "if else elif let func return";
+        private string _keywords = "if else elif let func return while continue break";
         private Regex _keywordRegex = new("^([a-zA-Z_0-9]*)$");
 
         public AlisaLexer(string file, string data)
