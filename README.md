@@ -18,15 +18,41 @@ foo = "foobar"
 ### Условия
 Скобки можно опустить
 ``` 
-if cond {
+if condition {
 
-} elif cond {
+} elif condition {
 
 } else {
 
 }
 ```
 
-### Системные команды
+### Объявление метода
+Чтобы объявить метод, вы должна написать ключевое слово `func`.
+```
+func sum(firstNumber, secondNumber) {
+  return firstNumber + secondNumber
+}
+```
+
+### Системные методы
 `console.print(text)` - вывести на консоль<br>
 `console.input(text)` - вывести на консоль, получить ответ от пользователя
+
+### Пример простой программы
+```
+func main() {
+	let pinCode = console.input("Введите пинкод: ")
+	let resultMsg = checkPinCode(pinCode)
+	console.print(resultMsg)
+}
+
+func checkPinCode(pinCode) {
+	if pinCode == "2482" {
+		return "Вы победили!"
+	}
+	
+	return "Что-то тут не так"
+}
+
+```
