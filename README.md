@@ -63,11 +63,7 @@ func main() {
 }
 
 func checkPinCode(pinCode) {
-	if pinCode == "2482" {
-		return true
-	}
-	
-	return false
+	return pinCode == "2482"
 }
 
 ```
